@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
 
     public class TraceCollector extends View {
         private static final float TOUCH_TOLERANCE = 4;
+        private static final float TRACE_TOLERANCE = 20;
 
         private ITraceRepository mRepository;
 
@@ -84,7 +85,7 @@ public class MainActivity extends Activity {
             mPaint.setStyle(Paint.Style.STROKE);
             mPaint.setStrokeJoin(Paint.Join.ROUND);
             mPaint.setStrokeCap(Paint.Cap.ROUND);
-            mPaint.setStrokeWidth(20);
+            mPaint.setStrokeWidth(10);
         }
 
         @Override
@@ -121,7 +122,10 @@ public class MainActivity extends Activity {
 
             if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
                 mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
-                mSession.moveTo(x, y, t);
+
+                if (dx >= TRACE_TOLERANCE || dy >= TRACE_TOLERANCE)
+                    mSession.moveTo(x, y, t);
+
                 mX = x;
                 mY = y;
             }
